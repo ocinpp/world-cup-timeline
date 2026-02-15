@@ -48,7 +48,9 @@ onMounted(() => {
   <div class="h-full flex flex-col">
     <!-- Section Title -->
     <div class="flex items-center justify-between px-4 py-3 border-b border-white/5">
-      <h2 class="text-wc-cream/50 text-xs uppercase tracking-wider font-medium">All Tournaments</h2>
+      <h2 class="text-wc-cream/50 text-xs uppercase tracking-wider font-medium">
+        All Tournaments
+      </h2>
       <span class="text-wc-cream/30 text-xs">{{ worldCups.length }} World Cups</span>
     </div>
 
@@ -61,16 +63,17 @@ onMounted(() => {
         v-for="(wc, index) in worldCups"
         :key="wc.year"
         :ref="(el) => setItemRef(el as HTMLElement, index)"
-        @mouseenter="handleMouseEnter(index)"
-        @mouseleave="handleMouseLeave"
-        @click="handleClick(index)"
         class="timeline-card group cursor-pointer"
         :class="{
           'selected': index === currentIndex,
           'hovered': index === hoveredIndex
         }"
+        @mouseenter="handleMouseEnter(index)"
+        @mouseleave="handleMouseLeave"
+        @click="handleClick(index)"
       >
-        <div class="flex items-center gap-4 p-3 rounded-xl transition-all duration-200"
+        <div
+          class="flex items-center gap-4 p-3 rounded-xl transition-all duration-200"
           :class="index === currentIndex
             ? 'bg-wc-coral/15 border border-wc-coral/30'
             : index === hoveredIndex
@@ -84,8 +87,11 @@ onMounted(() => {
               :src="wc.logo"
               :alt="`${wc.year} logo`"
               class="max-w-full max-h-full object-contain p-1"
-            />
-            <span v-else class="text-2xl">{{ wc.winner.flag }}</span>
+            >
+            <span
+              v-else
+              class="text-2xl"
+            >{{ wc.winner.flag }}</span>
           </div>
 
           <!-- Info -->
@@ -104,7 +110,10 @@ onMounted(() => {
               :class="index === currentIndex ? 'text-wc-cream/80' : 'text-wc-cream/50'"
             >
               🏆 {{ wc.winner.country }}
-              <span v-if="wc.winner.score" class="text-wc-gold/70 ml-1">{{ wc.winner.score }}</span>
+              <span
+                v-if="wc.winner.score"
+                class="text-wc-gold/70 ml-1"
+              >{{ wc.winner.score }}</span>
             </p>
           </div>
 
@@ -115,8 +124,18 @@ onMounted(() => {
               ? 'bg-wc-coral/20 text-wc-coral'
               : 'bg-transparent text-transparent group-hover:bg-wc-ucl-navy/50 group-hover:text-wc-cream/30'"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </div>
         </div>

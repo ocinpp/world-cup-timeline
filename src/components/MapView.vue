@@ -118,7 +118,7 @@ onUnmounted(() => {
     <div
       ref="mapContainer"
       class="w-full h-48 md:h-56 rounded-lg"
-    ></div>
+    />
   </div>
 </template>
 
