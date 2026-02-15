@@ -12,12 +12,17 @@ export default {
       },
       colors: {
         wc: {
-          gold: '#C9A227',
-          'gold-light': '#E8D48B',
-          grass: '#228B22',
-          pitch: '#1B4D3E',
-          'pitch-dark': '#0D2818',
-          night: '#0F1419',
+          gold: '#F5A623',
+          'gold-light': '#FFD93D',
+          coral: '#FF6B6B',
+          'coral-light': '#FF8E8E',
+          ocean: '#4ECDC4',
+          // UEFA Champions League blue theme
+          'ucl-blue': '#003399',
+          'ucl-navy': '#001C54',
+          'ucl-dark': '#0A1628',
+          'ucl-light': '#1A4D8C',
+          night: '#0A0E14',
           cream: '#F7F3E9',
         }
       },
@@ -46,8 +51,8 @@ export default {
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
         glowPulse: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(255, 215, 0, 0.3)' },
-          '50%': { boxShadow: '0 0 30px rgba(255, 215, 0, 0.6)' },
+          '0%, 100%': { boxShadow: '0 0 20px rgba(245, 166, 35, 0.4)' },
+          '50%': { boxShadow: '0 0 30px rgba(255, 107, 107, 0.6)' },
         },
       },
     },

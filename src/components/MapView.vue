@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, onUnmounted } from 'vue'
+import { ref, onMounted, watch, onUnmounted, nextTick } from 'vue'
 import L from 'leaflet'
 import type { HostCity } from '../types/world-cup'
 
@@ -10,13 +10,14 @@ const props = defineProps<{
 const mapContainer = ref<HTMLDivElement | null>(null)
 let map: L.Map | null = null
 let markers: L.Marker[] = []
+let isInitialized = false
 
-// Custom gold marker icon
-const goldIcon = L.divIcon({
+// Custom UCL blue marker icon
+const uclIcon = L.divIcon({
   className: 'custom-marker',
   html: `
-    <div class="w-6 h-6 rounded-full bg-wc-gold border-2 border-white shadow-lg flex items-center justify-center">
-      <svg class="w-3 h-3 text-wc-pitch-dark" fill="currentColor" viewBox="0 0 24 24">
+    <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#FF6B6B,#003399);border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">
+      <svg style="width:12px;height:12px;color:white;" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
       </svg>
     </div>
@@ -27,7 +28,7 @@ const goldIcon = L.divIcon({
 })
 
 function initMap() {
-  if (!mapContainer.value) return
+  if (!mapContainer.value || isInitialized) return
 
   // Initialize map
   map = L.map(mapContainer.value, {
@@ -42,7 +43,15 @@ function initMap() {
     maxZoom: 19,
   }).addTo(map)
 
-  updateMarkers()
+  isInitialized = true
+
+  // Fix map rendering after it's visible
+  nextTick(() => {
+    if (map) {
+      map.invalidateSize()
+      updateMarkers()
+    }
+  })
 }
 
 function updateMarkers() {
@@ -59,12 +68,12 @@ function updateMarkers() {
 
   props.cities.forEach(city => {
     const [lat, lng] = city.coordinates
-    const marker = L.marker([lat, lng], { icon: goldIcon })
+    const marker = L.marker([lat, lng], { icon: uclIcon })
       .addTo(map!)
       .bindPopup(`
-        <div class="p-2">
-          <p class="font-semibold text-wc-gold">${city.name}</p>
-          ${city.stadium ? `<p class="text-sm text-wc-cream/70">${city.stadium}</p>` : ''}
+        <div style="padding:8px;">
+          <p style="font-weight:600;color:#FF8E8E;">${city.name}</p>
+          ${city.stadium ? `<p style="font-size:12px;color:rgba(247,243,233,0.7);margin-top:4px;">${city.stadium}</p>` : ''}
         </div>
       `)
 
@@ -74,23 +83,32 @@ function updateMarkers() {
 
   // Fit map to bounds
   if (bounds.length > 0) {
-    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 6 })
+    map.fitBounds(bounds, { padding: [30, 30], maxZoom: 6 })
   }
 }
 
 // Watch for city changes
 watch(() => props.cities, () => {
-  updateMarkers()
+  nextTick(() => {
+    if (map) {
+      map.invalidateSize()
+    }
+    updateMarkers()
+  })
 }, { deep: true })
 
 onMounted(() => {
-  initMap()
+  // Small delay to ensure container is visible
+  setTimeout(() => {
+    initMap()
+  }, 100)
 })
 
 onUnmounted(() => {
   if (map) {
     map.remove()
     map = null
+    isInitialized = false
   }
 })
 </script>
@@ -99,7 +117,7 @@ onUnmounted(() => {
   <div class="map-container">
     <div
       ref="mapContainer"
-      class="w-full h-64 md:h-80 rounded-lg"
+      class="w-full h-48 md:h-56 rounded-lg"
     ></div>
   </div>
 </template>
@@ -117,17 +135,17 @@ onUnmounted(() => {
 @keyframes markerPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 0 rgba(201, 162, 39, 0.4);
+    box-shadow: 0 0 0 rgba(255, 107, 107, 0.4);
   }
   50% {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(201, 162, 39, 0.6);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
   }
 }
 
 .leaflet-popup-content-wrapper {
-  background: rgba(15, 20, 25, 0.95) !important;
-  border: 1px solid rgba(201, 162, 39, 0.3) !important;
+  background: rgba(10, 22, 40, 0.95) !important;
+  border: 1px solid rgba(0, 51, 153, 0.4) !important;
   border-radius: 8px !important;
 }
 

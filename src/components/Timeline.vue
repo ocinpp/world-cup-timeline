@@ -1,33 +1,29 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useTimeline } from '../composables/useTimeline'
 
-const { worldCups, currentIndex, openFullscreen, hasNext, hasPrev, next, prev } = useTimeline()
+const { worldCups, currentIndex, hoveredIndex, setHoveredIndex, selectIndex, openFullscreen } = useTimeline()
 
 const timelineRef = ref<HTMLElement | null>(null)
 const itemRefs = ref<Map<number, HTMLElement>>(new Map())
 
-const progressWidth = computed(() => {
-  if (worldCups.value.length === 0) return 0
-  return ((currentIndex.value + 1) / worldCups.value.length) * 100
-})
-
 function scrollToItem(index: number) {
   const item = itemRefs.value.get(index)
   if (item && timelineRef.value) {
-    const container = timelineRef.value
-    const itemLeft = item.offsetLeft
-    const itemWidth = item.offsetWidth
-    const containerWidth = container.clientWidth
-
-    container.scrollTo({
-      left: itemLeft - containerWidth / 2 + itemWidth / 2,
-      behavior: 'smooth'
-    })
+    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }
 }
 
-function handleItemClick(index: number) {
+function handleMouseEnter(index: number) {
+  setHoveredIndex(index)
+}
+
+function handleMouseLeave() {
+  // Do nothing - keep showing the hovered tournament
+}
+
+function handleClick(index: number) {
+  selectIndex(index)
   openFullscreen(index)
 }
 
@@ -49,107 +45,98 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative px-4 py-8">
-    <!-- Navigation Arrows -->
-    <button
-      @click="prev"
-      :disabled="!hasPrev"
-      class="nav-arrow absolute left-4 top-1/2 -translate-y-1/2 z-20"
-      aria-label="Previous"
-    >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-
-    <button
-      @click="next"
-      :disabled="!hasNext"
-      class="nav-arrow absolute right-4 top-1/2 -translate-y-1/2 z-20"
-      aria-label="Next"
-    >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-
-    <!-- Timeline Scroll Container -->
-    <div
-      ref="timelineRef"
-      class="overflow-x-auto scrollbar-hide py-8 px-12"
-      style="scrollbar-width: none; -ms-overflow-style: none;"
-    >
-      <div class="flex items-end gap-4 min-w-max px-4">
-        <div
-          v-for="(wc, index) in worldCups"
-          :key="wc.year"
-          :ref="(el) => setItemRef(el as HTMLElement, index)"
-          @click="handleItemClick(index)"
-          class="stagger-fade-in timeline-item group"
-          :style="{ animationDelay: `${index * 0.03}s` }"
-          :class="{ 'selected': index === currentIndex }"
-        >
-          <!-- Year Label -->
-          <div
-            class="year-badge mb-2 transition-colors duration-300"
-            :class="index === currentIndex ? 'text-wc-gold' : 'text-wc-cream/60 group-hover:text-wc-gold/80'"
-          >
-            {{ wc.year }}
-          </div>
-
-          <!-- Thumbnail Card -->
-          <div
-            class="timeline-thumbnail relative"
-            :class="{ 'active': index === currentIndex }"
-          >
-            <!-- Flag Background -->
-            <div class="absolute inset-0 flex items-center justify-center text-4xl opacity-80">
-              {{ wc.winner.flag }}
-            </div>
-
-            <!-- Selection Ring -->
-            <div
-              v-if="index === currentIndex"
-              class="absolute -inset-1 rounded-full border-2 border-wc-gold animate-glow-pulse"
-            ></div>
-          </div>
-
-          <!-- Winner Label -->
-          <div class="mt-2 text-center max-w-[80px]">
-            <p
-              class="text-xs font-medium truncate transition-colors duration-300"
-              :class="index === currentIndex ? 'text-wc-gold' : 'text-wc-cream/70'"
-            >
-              {{ wc.winner.country }}
-            </p>
-            <p class="text-[10px] text-wc-cream/40 truncate">{{ wc.hostCountry }}</p>
-          </div>
-
-          <!-- Connector Line -->
-          <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-px h-6 bg-gradient-to-b from-wc-gold/30 to-transparent"></div>
-        </div>
-      </div>
+  <div class="h-full flex flex-col">
+    <!-- Section Title -->
+    <div class="flex items-center justify-between px-4 py-3 border-b border-white/5">
+      <h2 class="text-wc-cream/50 text-xs uppercase tracking-wider font-medium">All Tournaments</h2>
+      <span class="text-wc-cream/30 text-xs">{{ worldCups.length }} World Cups</span>
     </div>
 
-    <!-- Progress Bar -->
-    <div class="mx-12 mt-4">
-      <div class="h-1 bg-wc-pitch/50 rounded-full overflow-hidden">
-        <div
-          class="progress-line h-full"
-          :style="{ width: `${progressWidth}%` }"
-        ></div>
-      </div>
-      <div class="flex justify-between mt-2 text-xs text-wc-cream/40">
-        <span>1930</span>
-        <span class="text-wc-gold">{{ worldCups[currentIndex]?.year }}</span>
-        <span>2022</span>
+    <!-- Scrollable List -->
+    <div
+      ref="timelineRef"
+      class="flex-1 overflow-y-auto p-3 space-y-2 scrollbar-thin"
+    >
+      <div
+        v-for="(wc, index) in worldCups"
+        :key="wc.year"
+        :ref="(el) => setItemRef(el as HTMLElement, index)"
+        @mouseenter="handleMouseEnter(index)"
+        @mouseleave="handleMouseLeave"
+        @click="handleClick(index)"
+        class="timeline-card group cursor-pointer"
+        :class="{
+          'selected': index === currentIndex,
+          'hovered': index === hoveredIndex
+        }"
+      >
+        <div class="flex items-center gap-4 p-3 rounded-xl transition-all duration-200"
+          :class="index === currentIndex
+            ? 'bg-wc-coral/15 border border-wc-coral/30'
+            : index === hoveredIndex
+              ? 'bg-wc-ucl-navy/40 border border-wc-gold/30'
+              : 'bg-wc-ucl-dark/40 border border-transparent hover:bg-wc-ucl-navy/30'"
+        >
+          <!-- Logo or Flag -->
+          <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-white rounded-lg overflow-hidden">
+            <img
+              v-if="wc.logo"
+              :src="wc.logo"
+              :alt="`${wc.year} logo`"
+              class="max-w-full max-h-full object-contain p-1"
+            />
+            <span v-else class="text-2xl">{{ wc.winner.flag }}</span>
+          </div>
+
+          <!-- Info -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-baseline gap-2">
+              <span
+                class="font-display text-xl transition-colors"
+                :class="index === currentIndex ? 'text-wc-coral' : index === hoveredIndex ? 'text-wc-gold' : 'text-wc-cream/70'"
+              >
+                {{ wc.year }}
+              </span>
+              <span class="text-wc-cream/40 text-sm">{{ wc.hostCountry }}</span>
+            </div>
+            <p
+              class="text-sm truncate transition-colors"
+              :class="index === currentIndex ? 'text-wc-cream/80' : 'text-wc-cream/50'"
+            >
+              🏆 {{ wc.winner.country }}
+              <span v-if="wc.winner.score" class="text-wc-gold/70 ml-1">{{ wc.winner.score }}</span>
+            </p>
+          </div>
+
+          <!-- Arrow indicator -->
+          <div
+            class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+            :class="index === currentIndex || index === hoveredIndex
+              ? 'bg-wc-coral/20 text-wc-coral'
+              : 'bg-transparent text-transparent group-hover:bg-wc-ucl-navy/50 group-hover:text-wc-cream/30'"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 107, 0.15);
+  border-radius: 3px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 107, 0.3);
 }
 </style>

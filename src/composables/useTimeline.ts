@@ -2,11 +2,19 @@ import { ref, computed } from 'vue'
 import type { WorldCup } from '../types/world-cup'
 
 const currentIndex = ref(0)
+const hoveredIndex = ref<number | null>(null)
 const viewMode = ref<'timeline' | 'fullscreen'>('timeline')
 const worldCups = ref<WorldCup[]>([])
 
 export function useTimeline() {
   const currentWorldCup = computed(() => worldCups.value[currentIndex.value])
+
+  const displayWorldCup = computed(() => {
+    if (hoveredIndex.value !== null) {
+      return worldCups.value[hoveredIndex.value]
+    }
+    return currentWorldCup.value
+  })
 
   const hasNext = computed(() => currentIndex.value < worldCups.value.length - 1)
   const hasPrev = computed(() => currentIndex.value > 0)
@@ -20,6 +28,15 @@ export function useTimeline() {
     if (index !== -1) {
       currentIndex.value = index
     }
+  }
+
+  function setHoveredIndex(index: number | null) {
+    hoveredIndex.value = index
+  }
+
+  function selectIndex(index: number) {
+    currentIndex.value = index
+    hoveredIndex.value = null
   }
 
   function next() {
@@ -63,13 +80,17 @@ export function useTimeline() {
 
   return {
     currentIndex,
+    hoveredIndex,
     viewMode,
     worldCups,
     currentWorldCup,
+    displayWorldCup,
     hasNext,
     hasPrev,
     setWorldCups,
     selectByYear,
+    setHoveredIndex,
+    selectIndex,
     next,
     prev,
     goToFirst,
