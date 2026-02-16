@@ -20,7 +20,7 @@ onMounted(() => {
     <!-- Decorative background -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-wc-night via-transparent to-wc-night opacity-50" />
-      <div class="absolute top-[-30%] left-[-20%] w-[70%] h-[70%] bg-wc-coral/15 rounded-full blur-[150px] animate-pulse-slow" />
+      <div class="absolute top-[-30%] left-[-20%] w-[70%] h-[70%] bg-wc-accent/15 rounded-full blur-[150px] animate-pulse-slow" />
       <div
         class="absolute bottom-[-30%] right-[-20%] w-[70%] h-[70%] bg-wc-ucl-blue/20 rounded-full blur-[150px] animate-pulse-slow"
         style="animation-delay: 1s;"
@@ -31,13 +31,11 @@ onMounted(() => {
     <header class="relative z-20 px-6 py-3 flex items-center justify-between border-b border-wc-ucl-blue/20 bg-wc-ucl-dark/60 backdrop-blur-sm">
       <div class="flex items-center gap-3">
         <div class="trophy-glow">
-          <svg
-            class="w-7 h-7 text-wc-gold"
-            viewBox="0 0 24 24"
-            fill="currentColor"
+          <img
+            src="/images/FIFA_World_Cup_Icon_(Campionato_mondiale_di_calcio).svg"
+            alt="World Cup Trophy"
+            class="w-7 h-7"
           >
-            <path d="M12 2C13.1 2 14 2.9 14 4V5H16C16.55 5 17 5.45 17 6V8C17 10.21 15.21 12 13 12H12.83C12.42 13.17 11.31 14 10 14C8.34 14 7 12.66 7 11V6C7 5.45 7.45 5 8 5H10V4C10 2.9 10.9 2 12 2ZM12 4C11.45 4 11 4.45 11 5V5H13V4C13 4.45 12.55 4 12 4ZM9 7V11C9 11.55 9.45 12 10 12C10.55 12 11 11.55 11 11V7H9ZM13 10C14.1 10 15 9.1 15 8V7H13V10ZM5 6H6V8H5C4.45 8 4 8.45 4 9V10C4 10.55 4.45 11 5 11H6.05C6.28 11.72 6.68 12.36 7.2 12.88C6.54 12.96 5.88 13 5.2 13C4.42 13 3.67 12.95 3 12.82C2.39 12.71 2 12.16 2 11.53V9C2 7.34 3.34 6 5 6ZM19 6C20.66 6 22 7.34 22 9V11.53C22 12.16 21.61 12.71 21 12.82C20.33 12.95 19.58 13 18.8 13C18.12 13 17.46 12.96 16.8 12.88C17.32 12.36 17.72 11.72 17.95 11H19C19.55 11 20 10.55 20 10V9C20 8.45 19.55 8 19 8H18V6H19ZM12 16C14.67 16 17.24 16.79 19.26 18.14C20.4 18.92 21 20.24 21 21.6V22H3V21.6C3 20.24 3.6 18.92 4.74 18.14C6.76 16.79 9.33 16 12 16Z" />
-          </svg>
         </div>
         <div>
           <h1 class="font-display text-xl md:text-2xl tracking-wider text-wc-cream">
@@ -50,7 +48,7 @@ onMounted(() => {
         <!-- Current selection indicator -->
         <div class="hidden sm:flex items-center gap-2 text-sm">
           <span class="text-wc-cream/40">Selected:</span>
-          <span class="font-display text-lg text-wc-coral">{{ displayWorldCup?.year }}</span>
+          <span class="font-display text-lg text-wc-accent">{{ displayWorldCup?.year }}</span>
           <span class="text-wc-cream/60">{{ displayWorldCup?.hostCountry }}</span>
         </div>
 
@@ -68,13 +66,13 @@ onMounted(() => {
       <div class="lg:w-1/2 xl:w-2/5 p-4 lg:p-6 flex flex-col justify-center">
         <div class="featured-card relative overflow-hidden">
           <!-- Background glow -->
-          <div class="absolute inset-0 bg-gradient-to-br from-wc-coral/10 via-transparent to-wc-ocean/10" />
+          <div class="absolute inset-0 bg-gradient-to-br from-wc-accent/10 via-transparent to-wc-ocean/10" />
 
           <!-- Content -->
           <div class="relative p-6 lg:p-8">
             <!-- Year with Logo positioned top right -->
             <div class="relative mb-6">
-              <span class="font-display text-6xl lg:text-7xl text-wc-coral leading-none transition-all duration-200">{{ displayWorldCup?.year }}</span>
+              <span class="font-display text-6xl lg:text-7xl text-wc-accent leading-none transition-all duration-200">{{ displayWorldCup?.year }}</span>
               <!-- Logo - positioned top right -->
               <div
                 v-if="displayWorldCup?.logo"
@@ -200,7 +198,7 @@ onMounted(() => {
 <style scoped>
 .app-background {
   background:
-    radial-gradient(ellipse at 30% 0%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
     radial-gradient(ellipse at 70% 100%, rgba(0, 51, 153, 0.15) 0%, transparent 50%),
     linear-gradient(180deg, #0A0E14 0%, #0A1628 50%, #0A0E14 100%);
 }
