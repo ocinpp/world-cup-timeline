@@ -121,7 +121,7 @@ const mapCities = computed(() => {
             <div class="glass-card p-4 relative flex-shrink-0">
               <!-- Year with Logo positioned top right -->
               <div class="relative mb-3">
-                <span class="font-display text-4xl text-wc-coral leading-none">{{ currentWorldCup.year }}</span>
+                <span class="font-display text-4xl text-wc-accent leading-none">{{ currentWorldCup.year }}</span>
                 <!-- Logo - positioned top right -->
                 <div
                   v-if="currentWorldCup.logo"
@@ -159,7 +159,7 @@ const mapCities = computed(() => {
                   </p>
                   <p
                     v-if="currentWorldCup.winner.score"
-                    class="score-display text-xl"
+                    class="font-display text-xl text-wc-gold"
                   >
                     {{ currentWorldCup.winner.score }}
                   </p>
@@ -221,7 +221,7 @@ const mapCities = computed(() => {
                 <div
                   v-for="(city, idx) in currentWorldCup.hostCities"
                   :key="city.name"
-                  class="venue-card group relative p-3 rounded-xl bg-wc-ucl-dark/40 border border-wc-ucl-blue/20 hover:border-wc-coral/30 transition-all duration-200"
+                  class="venue-card group relative p-3 rounded-xl bg-wc-ucl-dark/40 border border-wc-ucl-blue/20 hover:border-wc-accent/30 transition-all duration-200"
                 >
                   <!-- Index number -->
                   <div class="absolute -left-1 -top-1 w-5 h-5 rounded-full bg-wc-ucl-blue flex items-center justify-center text-[10px] font-bold text-white">
@@ -232,7 +232,7 @@ const mapCities = computed(() => {
                     <!-- Stadium icon -->
                     <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-wc-ucl-navy/50 flex items-center justify-center">
                       <svg
-                        class="w-5 h-5 text-wc-coral"
+                        class="w-5 h-5 text-wc-accent"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -265,7 +265,7 @@ const mapCities = computed(() => {
                       :href="city.googleMapsUrl"
                       target="_blank"
                       rel="noopener"
-                      class="flex-shrink-0 w-8 h-8 rounded-lg bg-wc-ucl-navy/50 hover:bg-wc-coral/20 flex items-center justify-center text-wc-cream/40 hover:text-wc-coral transition-all"
+                      class="flex-shrink-0 w-8 h-8 rounded-lg bg-wc-ucl-navy/50 hover:bg-wc-accent/20 flex items-center justify-center text-wc-cream/40 hover:text-wc-accent transition-all"
                       title="View on Google Maps"
                     >
                       <svg
@@ -317,10 +317,10 @@ const mapCities = computed(() => {
   background: transparent;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgba(255, 107, 107, 0.15);
+  background: rgba(59, 130, 246, 0.15);
   border-radius: 3px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 107, 107, 0.3);
+  background: rgba(59, 130, 246, 0.3);
 }
 </style>

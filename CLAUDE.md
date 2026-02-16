@@ -128,3 +128,5 @@ npm run test:run     # Run tests once
 3. **UCL blue theme**: User preference for UEFA Champions League aesthetics over original green theme.
 
 4. **Hidden Quick Info Bar**: Commented out in App.vue, can be restored if needed.
+
+5. **Consistent scoreline styling**: Both main page and detail view use solid gold (`text-wc-gold`) for winner scores, avoiding gradient effects for consistency.
