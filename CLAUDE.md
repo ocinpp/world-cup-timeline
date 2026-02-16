@@ -32,7 +32,7 @@ The app uses Vue composables for state management (no Pinia):
 
 - TailwindCSS with custom theme colors in `tailwind.config.js`
 - UCL blue palette: `wc-ucl-blue`, `wc-ucl-navy`, `wc-ucl-dark`, etc.
-- Accent colors: `wc-coral` (#FF6B6B), `wc-gold` (#FFD700)
+- Accent colors: `wc-accent` (#3B82F6 blue), `wc-gold` (#F5A623)
 - Custom scrollbar styles in component `<style scoped>` blocks
 
 ## Key Patterns
@@ -76,6 +76,31 @@ For scrollable content with fixed headers, use this pattern:
 ```
 
 Parent must have `min-h-0` for flex shrinking to work.
+
+### Mobile Layout Patterns
+
+For responsive layouts that differ between mobile and desktop:
+
+```html
+<!-- Scrollable on mobile, fixed on desktop -->
+<div class="overflow-y-auto lg:overflow-hidden min-h-0">
+
+<!-- Max height on mobile with scroll, unlimited on desktop -->
+<div class="max-h-64 lg:max-h-none overflow-y-auto">
+
+<!-- Sticky navigation on mobile -->
+<div class="sticky top-0 z-20 bg-wc-ucl-dark/95 backdrop-blur-sm">
+```
+
+### Map Crowded Marker Detection
+
+MapView automatically detects when markers are close together and zooms in more:
+
+```typescript
+const CROWDED_THRESHOLD = 0.5 // degrees
+const DEFAULT_MAX_ZOOM = 6
+const CROWDED_MAX_ZOOM = 14
+```
 
 ## Data Format
 
@@ -125,8 +150,12 @@ npm run test:run     # Run tests once
 
 2. **No Pinia**: App state is simple enough for composables. Can migrate if complexity grows.
 
-3. **UCL blue theme**: User preference for UEFA Champions League aesthetics over original green theme.
+3. **UCL blue theme**: User preference for UEFA Champions League aesthetics. Uses `wc-accent` (blue) as primary accent color.
 
 4. **Hidden Quick Info Bar**: Commented out in App.vue, can be restored if needed.
 
-5. **Consistent scoreline styling**: Both main page and detail view use solid gold (`text-wc-gold`) for winner scores, avoiding gradient effects for consistency.
+5. **Consistent scoreline styling**: Both main page and detail view use solid gold (`text-wc-gold`) for winner scores.
+
+6. **Combined navigation in detail view**: Close button is part of the navigation bar for consistency across mobile and desktop.
+
+7. **Mobile-first responsive design**: Detail page uses `overflow-y-auto lg:overflow-hidden` pattern for mobile scrolling while preserving desktop fixed layout.

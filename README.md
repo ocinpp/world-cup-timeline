@@ -5,7 +5,8 @@ An immersive Vue.js application showcasing the history of FIFA World Cups from 1
 ## Features
 
 - **Split-screen Layout**: Featured card with current selection on the left, scrollable timeline on the right
-- **Interactive Map**: Leaflet-powered map showing host cities with custom markers
+- **Responsive Design**: Optimized layouts for both mobile and desktop with smooth scrolling
+- **Interactive Map**: Leaflet-powered map showing host cities with custom markers and smart zoom for crowded areas
 - **Fullscreen Detail View**: Comprehensive tournament information including champions, venues, and fun facts
 - **World Cup Logos**: Authentic tournament logos for each year
 - **Keyboard Navigation**: Arrow keys, Home/End, Enter/Escape for quick navigation
