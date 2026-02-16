@@ -32,7 +32,10 @@ export const worldCups: WorldCup[] = [
       'First ever World Cup tournament',
       'Only 13 teams participated',
       'Uruguay won on home soil',
-      'Estadio Centenario was built specifically for the tournament'
+      'Estadio Centenario was built specifically for the tournament',
+      'European teams were reluctant to travel to South America',
+      'Argentina and Uruguay used different balls in the final - a compromise was reached at halftime',
+      'The tournament was held to celebrate Uruguay\'s 100 years of independence'
     ]
   },
   {
@@ -56,7 +59,10 @@ export const worldCups: WorldCup[] = [
       'First World Cup with qualification rounds',
       'Italy won as hosts',
       'Uruguay refused to participate in protest',
-      '16 teams competed'
+      '16 teams competed',
+      'Benito Mussolini used the tournament for political propaganda',
+      'The final was held in Rome on Sunday',
+      'Egypt became the first African team to participate'
     ]
   },
   {
@@ -81,7 +87,10 @@ export const worldCups: WorldCup[] = [
       'Italy became first team to retain the trophy',
       'Last tournament before WWII hiatus',
       'First holders to defend their title successfully',
-      'Brazil scored 11 goals in a single match vs Poland'
+      'Brazil scored 11 goals in a single match vs Poland',
+      'Austria was annexed by Germany during the tournament',
+      'Leonidas da Silva scored the tournament\'s first bicycle kick',
+      'Sweden received a bye to the semi-finals without playing'
     ]
   },
   {
@@ -103,7 +112,10 @@ export const worldCups: WorldCup[] = [
       'Famous "Maracanazo" - Uruguay beat Brazil at Maracanã',
       'No official final - decided by final group stage',
       'First tournament to feature British home nations',
-      'Official attendance of 173,850 in decisive match'
+      'Official attendance of 173,850 in decisive match',
+      'Brazil only needed a draw to win but lost 2-1',
+      'Three players left the field in tears',
+      'India withdrew because they weren\'t allowed to play barefoot'
     ]
   },
   {
@@ -125,7 +137,10 @@ export const worldCups: WorldCup[] = [
       'Known as the "Miracle of Bern"',
       'Hungary were undefeated for 4 years before the final',
       'Highest scoring tournament (5.38 goals per game)',
-      'First televised World Cup'
+      'First televised World Cup',
+      'Hungary beat West Germany 8-3 in the group stage',
+      'Ferenc Puskás played in the final despite being injured',
+      'The final was played in heavy rain'
     ]
   },
   {
@@ -153,7 +168,10 @@ export const worldCups: WorldCup[] = [
       'Pelé scored 6 goals including 2 in the final',
       'Brazil became first team to win outside their continent',
       'Just Fontaine scored record 13 goals for France',
-      'Garrincha and Pelé partnership began'
+      'Garrincha and Pelé partnership began',
+      'Pelé was only 17 years old',
+      'Fontaine\'s goal record still stands today',
+      'Sweden became the last host to reach the final until 1978'
     ]
   },
   {
@@ -173,7 +191,10 @@ export const worldCups: WorldCup[] = [
       'Pelé injured in group stage',
       'Garrincha was the star of the tournament',
       'Brazil joined Italy as two-time winners',
-      'Defensive tournament with 4-0 highest scoreline'
+      'Defensive tournament with 4-0 highest scoreline',
+      'Garrincha was sent off in semi-final but allowed to play in final',
+      'The "Battle of Santiago" between Chile and Italy was one of the most violent matches ever',
+      'First World Cup with squads of 22 players'
     ]
   },
   {
@@ -198,7 +219,10 @@ export const worldCups: WorldCup[] = [
       'Geoff Hurst is only man to score hat-trick in World Cup final',
       'Controversial "Wembley goal" - did the ball cross the line?',
       'North Korea shocked Italy in group stage',
-      'Eusébio was top scorer with 9 goals'
+      'Eusébio was top scorer with 9 goals',
+      'North Korea led Portugal 3-0 before losing 5-3',
+      'Pickles the dog found the stolen Jules Rimet Trophy',
+      'First mascot introduced - World Cup Willie'
     ]
   },
   {
@@ -219,7 +243,10 @@ export const worldCups: WorldCup[] = [
       'Brazil kept the Jules Rimet Trophy permanently',
       'First World Cup broadcast in color',
       'Jairzinho scored in every round',
-      'Carlos Alberto scored one of the greatest goals ever'
+      'Carlos Alberto scored one of the greatest goals ever',
+      'Considered by many the greatest team ever assembled',
+      'El Salvador and Israel made their only appearances',
+      'Goal average was used instead of goal difference for tiebreakers'
     ]
   },
   {
@@ -244,7 +271,10 @@ export const worldCups: WorldCup[] = [
       'New FIFA World Cup Trophy introduced',
       'Johan Cruyff and "Total Football" captured the imagination',
       'Poland finished third with Lato as top scorer',
-      'East and West Germany both participated'
+      'East and West Germany both participated',
+      'West Germany beat East Germany 1-0 in the only meeting',
+      'Cruyff famously didn\'t wear the Adidas logo due to personal sponsorship',
+      'First time goal difference was used as tiebreaker'
     ]
   },
   {
@@ -265,7 +295,10 @@ export const worldCups: WorldCup[] = [
       'Argentina won first World Cup',
       'Mario Kempes was top scorer with 6 goals',
       'Controversy over Argentina-Peru match',
-      'Netherlands lost second consecutive final'
+      'Netherlands lost second consecutive final',
+      'Argentina needed to beat Peru by 4 goals to advance - they won 6-0',
+      'Tournament held under military dictatorship',
+      'TICKET system introduced: red and yellow cards'
     ]
   },
   {
@@ -295,7 +328,10 @@ export const worldCups: WorldCup[] = [
       'Tournament expanded to 24 teams',
       'Paolo Rossi returned from ban to win Golden Boot',
       'Italy-Brazil match considered one of the greatest ever',
-      'Northern Ireland beat hosts Spain'
+      'Northern Ireland beat hosts Spain',
+      'Algeria won but were eliminated due to "disgrace of Gijón"',
+      'Kuwait sheikh invaded the pitch to protest a goal',
+      'First penalty shootout in World Cup history'
     ]
   },
   {
@@ -320,7 +356,10 @@ export const worldCups: WorldCup[] = [
       'Maradona scored both "Hand of God" and "Goal of the Century" vs England',
       'Mexico became first dual host (1970, 1986)',
       'Canada made their first World Cup appearance',
-      'First tournament with penalty shootouts in knockout stage'
+      'First tournament with penalty shootouts in knockout stage',
+      'Colombia crashed out after stunning 5-1 loss',
+      'Belgium beat USSR 4-3 after extra time in one of the best matches',
+      'Original host Colombia withdrew due to financial issues'
     ]
   },
   {
@@ -348,7 +387,10 @@ export const worldCups: WorldCup[] = [
       'Lowest goals-per-game average (2.21)',
       'Cameroon became first African team to reach quarter-finals',
       'Salvatore Schillaci emerged as unlikely hero',
-      'Last tournament for West Germany before reunification'
+      'Last tournament for West Germany before reunification',
+      'Roger Milla\'s corner flag dance became iconic',
+      'Argentina lost 1-0 to Cameroon in the opening match',
+      'First African nation to reach quarter-finals'
     ]
   },
   {
@@ -373,7 +415,10 @@ export const worldCups: WorldCup[] = [
       'Record attendance of 3.6 million fans',
       'First final decided on penalties',
       'Roberto Baggio missed decisive penalty',
-      'Oleg Salenko scored 5 goals in one match'
+      'Oleg Salenko scored 5 goals in one match',
+      'Colombian defender Andrés Escobar was murdered after scoring an own goal',
+      'Bulgaria reached semi-finals for the first time',
+      'Diana Ross famously missed a penalty at the opening ceremony'
     ]
   },
   {
@@ -399,7 +444,10 @@ export const worldCups: WorldCup[] = [
       'France won first World Cup',
       'Tournament expanded to 32 teams',
       'Ronaldo had mysterious health issue before final',
-      'Zidane became a national hero'
+      'Zidane became a national hero',
+      'Croatia finished third in their first independent appearance',
+      'Davor Šuker won the Golden Boot with 6 goals',
+      'Michael Owen announced himself with a goal vs Argentina'
     ]
   },
   {
@@ -434,7 +482,10 @@ export const worldCups: WorldCup[] = [
       'First World Cup co-hosted by two nations',
       'First World Cup in Asia',
       'South Korea reached semi-finals',
-      'Ronaldo won Golden Boot with 8 goals'
+      'Ronaldo won Golden Boot with 8 goals',
+      'Defending champions France went out without scoring',
+      'Turkey finished third - their best ever result',
+      'Ronaldinho\'s free kick vs England caught Seaman off his line'
     ]
   },
   {
@@ -462,7 +513,10 @@ export const worldCups: WorldCup[] = [
       'Zidane headbutted Materazzi in his final professional game',
       'Italy conceded only 2 goals (one own goal, one penalty)',
       'Fabio Cannavaro earned Ballon d\'Or',
-      'Grosso scored winning penalty'
+      'Grosso scored winning penalty',
+      'Buffon let in only 2 goals (one own goal, one penalty)',
+      'Ukraine and Togo made their World Cup debuts',
+      'Germany hosted despite not qualifying for the previous two tournaments'
     ]
   },
   {
@@ -487,7 +541,10 @@ export const worldCups: WorldCup[] = [
       'First World Cup held in Africa',
       'Vuvuzelas became the tournament\'s soundtrack',
       'Spain lost their opening game but won the tournament',
-      'Iniesta scored the winner in extra time'
+      'Iniesta scored the winner in extra time',
+      'Paul the octopus correctly predicted 8 matches',
+      'Defending champions Italy went out in group stage',
+      'Waka Waka by Shakira became the iconic World Cup song'
     ]
   },
   {
@@ -515,7 +572,10 @@ export const worldCups: WorldCup[] = [
       'Germany beat Brazil 7-1 in semi-final',
       'Miroslav Klose became all-time top scorer (16 goals)',
       'James Rodríguez won Golden Boot with 6 goals',
-      'Goal-line technology used for first time'
+      'Goal-line technology used for first time',
+      'Germany scored 5 goals in 18 minutes vs Brazil',
+      'Neymar was injured in quarter-final and couldn\'t play semi',
+      'Vanishing foam introduced for free kicks'
     ]
   },
   {
@@ -542,7 +602,10 @@ export const worldCups: WorldCup[] = [
       'First tournament with VAR',
       'Croatia reached first final',
       'Mbappé became second teenager to score in final after Pelé',
-      'Own goals record (12) was broken'
+      'Own goals record (12) was broken',
+      'Smallest nation Iceland made their debut',
+      'Penalty shootouts set a record with 4 in knockout stage',
+      'Croatia played 3 consecutive extra time matches'
     ]
   },
   {
@@ -565,7 +628,10 @@ export const worldCups: WorldCup[] = [
       'Lionel Messi finally won the World Cup',
       'Greatest final ever according to many',
       'First winter World Cup',
-      'Mbappé scored hat-trick in final'
+      'Mbappé scored hat-trick in final',
+      'First World Cup held in the Arab world',
+      'Morocco became first African semi-finalists',
+      'Final had most goals (6) since 1966'
     ]
   }
 ]
