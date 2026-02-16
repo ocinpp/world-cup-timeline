@@ -60,7 +60,7 @@ onMounted(() => {
     <!-- Scrollable List -->
     <div
       ref="timelineRef"
-      class="flex-1 overflow-y-auto p-3 space-y-2 scrollbar-thin"
+      class="flex-1 overflow-y-auto p-3 space-y-2 scrollbar-thin min-h-0"
     >
       <div
         v-for="(wc, index) in worldCups"
@@ -78,7 +78,7 @@ onMounted(() => {
         <div
           class="flex items-center gap-4 p-3 rounded-xl transition-all duration-200"
           :class="index === currentIndex
-            ? 'bg-wc-coral/15 border border-wc-coral/30'
+            ? 'bg-wc-accent/15 border border-wc-accent/30'
             : index === hoveredIndex
               ? 'bg-wc-ucl-navy/40 border border-wc-gold/30'
               : 'bg-wc-ucl-dark/40 border border-transparent hover:bg-wc-ucl-navy/30'"
@@ -102,7 +102,7 @@ onMounted(() => {
             <div class="flex items-baseline gap-2">
               <span
                 class="font-display text-xl transition-colors"
-                :class="index === currentIndex ? 'text-wc-coral' : index === hoveredIndex ? 'text-wc-gold' : 'text-wc-cream/70'"
+                :class="index === currentIndex ? 'text-wc-accent' : index === hoveredIndex ? 'text-wc-gold' : 'text-wc-cream/70'"
               >
                 {{ wc.year }}
               </span>
@@ -124,7 +124,7 @@ onMounted(() => {
           <div
             class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
             :class="index === currentIndex || index === hoveredIndex
-              ? 'bg-wc-coral/20 text-wc-coral'
+              ? 'bg-wc-accent/20 text-wc-accent'
               : 'bg-transparent text-transparent group-hover:bg-wc-ucl-navy/50 group-hover:text-wc-cream/30'"
           >
             <svg
@@ -155,10 +155,10 @@ onMounted(() => {
   background: transparent;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgba(255, 107, 107, 0.15);
+  background: rgba(59, 130, 246, 0.15);
   border-radius: 3px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 107, 107, 0.3);
+  background: rgba(59, 130, 246, 0.3);
 }
 </style>

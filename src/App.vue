@@ -34,7 +34,7 @@ onMounted(() => {
           <img
             src="/images/FIFA_World_Cup_Icon_(Campionato_mondiale_di_calcio).svg"
             alt="World Cup Trophy"
-            class="w-7 h-7"
+            class="h-8 w-auto object-contain"
           >
         </div>
         <div>
@@ -61,22 +61,22 @@ onMounted(() => {
     </header>
 
     <!-- Main Content Area - Split Layout -->
-    <main class="relative z-10 flex-1 flex flex-col lg:flex-row overflow-hidden">
+    <main class="relative z-10 flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
       <!-- Left: Large Featured Card -->
-      <div class="lg:w-1/2 xl:w-2/5 p-4 lg:p-6 flex flex-col justify-center">
+      <div class="lg:w-1/2 xl:w-2/5 p-4 lg:p-6 flex flex-col lg:justify-center flex-shrink-0">
         <div class="featured-card relative overflow-hidden">
           <!-- Background glow -->
           <div class="absolute inset-0 bg-gradient-to-br from-wc-accent/10 via-transparent to-wc-ocean/10" />
 
           <!-- Content -->
-          <div class="relative p-6 lg:p-8">
+          <div class="relative p-4 lg:p-6 xl:p-8">
             <!-- Year with Logo positioned top right -->
-            <div class="relative mb-6">
-              <span class="font-display text-6xl lg:text-7xl text-wc-accent leading-none transition-all duration-200">{{ displayWorldCup?.year }}</span>
+            <div class="relative mb-3 lg:mb-6">
+              <span class="font-display text-5xl lg:text-6xl xl:text-7xl text-wc-accent leading-none transition-all duration-200">{{ displayWorldCup?.year }}</span>
               <!-- Logo - positioned top right -->
               <div
                 v-if="displayWorldCup?.logo"
-                class="absolute -top-2 right-0 flex-shrink-0 w-20 h-20 lg:w-28 lg:h-28 bg-white rounded-xl p-2 flex items-center justify-center shadow-lg"
+                class="absolute -top-1 right-0 flex-shrink-0 w-14 h-14 lg:w-20 lg:h-20 xl:w-28 xl:h-28 bg-white rounded-lg lg:rounded-xl p-1 lg:p-2 flex items-center justify-center shadow-lg"
               >
                 <img
                   :src="displayWorldCup.logo"
@@ -87,28 +87,28 @@ onMounted(() => {
             </div>
 
             <!-- Host -->
-            <div class="mb-6">
-              <p class="text-wc-cream/50 text-sm uppercase tracking-wider mb-1">
+            <div class="mb-3 lg:mb-6">
+              <p class="text-wc-cream/50 text-xs lg:text-sm uppercase tracking-wider mb-0.5 lg:mb-1">
                 Hosted by
               </p>
-              <p class="text-2xl lg:text-3xl font-semibold text-wc-cream transition-all duration-200">
+              <p class="text-xl lg:text-2xl xl:text-3xl font-semibold text-wc-cream transition-all duration-200">
                 {{ displayWorldCup?.hostCountry }}
               </p>
             </div>
 
             <!-- Winner -->
-            <div class="flex items-center gap-4 p-4 bg-wc-ucl-dark/60 rounded-xl border border-wc-ucl-blue/30 transition-all duration-200">
-              <span class="text-5xl transition-all duration-200">{{ displayWorldCup?.winner.flag }}</span>
+            <div class="flex items-center gap-3 lg:gap-4 p-3 lg:p-4 bg-wc-ucl-dark/60 rounded-xl border border-wc-ucl-blue/30 transition-all duration-200">
+              <span class="text-4xl lg:text-5xl transition-all duration-200">{{ displayWorldCup?.winner.flag }}</span>
               <div class="flex-1">
                 <p class="text-wc-gold/70 text-xs uppercase tracking-wider">
                   Champions
                 </p>
-                <p class="text-xl lg:text-2xl font-semibold text-wc-cream transition-all duration-200">
+                <p class="text-lg lg:text-xl xl:text-2xl font-semibold text-wc-cream transition-all duration-200">
                   {{ displayWorldCup?.winner.country }}
                 </p>
                 <p
                   v-if="displayWorldCup?.winner.score"
-                  class="font-display text-3xl text-wc-gold transition-all duration-200"
+                  class="font-display text-2xl lg:text-3xl text-wc-gold transition-all duration-200"
                 >
                   {{ displayWorldCup.winner.score }}
                 </p>
@@ -118,14 +118,14 @@ onMounted(() => {
             <!-- Runner up -->
             <div
               v-if="displayWorldCup?.runnerUp"
-              class="mt-4 flex items-center gap-3 text-wc-cream/60 transition-all duration-200"
+              class="mt-3 lg:mt-4 flex items-center gap-2 lg:gap-3 text-wc-cream/60 transition-all duration-200"
             >
-              <span class="text-2xl">{{ displayWorldCup.runnerUp.flag }}</span>
-              <span class="text-sm">Runner-up: {{ displayWorldCup.runnerUp.country }}</span>
+              <span class="text-xl lg:text-2xl">{{ displayWorldCup.runnerUp.flag }}</span>
+              <span class="text-xs lg:text-sm">Runner-up: {{ displayWorldCup.runnerUp.country }}</span>
             </div>
 
             <!-- Navigation -->
-            <div class="flex items-center justify-between mt-8 pt-4 border-t border-white/10">
+            <div class="flex items-center justify-between mt-4 lg:mt-8 pt-3 lg:pt-4 border-t border-white/10">
               <button
                 :disabled="!hasPrev"
                 class="nav-arrow"
@@ -175,9 +175,9 @@ onMounted(() => {
       </div>
 
       <!-- Right: Timeline + Info -->
-      <div class="lg:w-1/2 xl:w-3/5 flex flex-col border-l border-white/5">
+      <div class="lg:w-1/2 xl:w-3/5 flex flex-col border-l border-white/5 min-h-0">
         <!-- Timeline -->
-        <div class="flex-1 overflow-hidden">
+        <div class="flex-1 overflow-y-auto lg:overflow-hidden min-h-0">
           <Timeline />
         </div>
 

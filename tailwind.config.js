@@ -14,8 +14,8 @@ export default {
         wc: {
           gold: '#F5A623',
           'gold-light': '#FFD93D',
-          coral: '#FF6B6B',
-          'coral-light': '#FF8E8E',
+          accent: '#3B82F6',
+          'accent-light': '#60A5FA',
           ocean: '#4ECDC4',
           // UEFA Champions League blue theme
           'ucl-blue': '#003399',
@@ -52,7 +52,7 @@ export default {
         },
         glowPulse: {
           '0%, 100%': { boxShadow: '0 0 20px rgba(245, 166, 35, 0.4)' },
-          '50%': { boxShadow: '0 0 30px rgba(255, 107, 107, 0.6)' },
+          '50%': { boxShadow: '0 0 30px rgba(59, 130, 246, 0.6)' },
         },
       },
     },

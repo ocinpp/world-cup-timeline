@@ -22,6 +22,22 @@ function handleBackdropClick(e: MouseEvent) {
   }
 }
 
+function scrollToTop() {
+  if (overlayRef.value) {
+    overlayRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
+
+function handlePrev() {
+  prev()
+  scrollToTop()
+}
+
+function handleNext() {
+  next()
+  scrollToTop()
+}
+
 // Compute host cities for the map
 const mapCities = computed(() => {
   if (!currentWorldCup.value) return []
@@ -37,36 +53,15 @@ const mapCities = computed(() => {
     aria-modal="true"
     @click="handleBackdropClick"
   >
-    <div class="h-full flex flex-col items-center justify-center p-4 md:p-6">
-      <div class="max-w-6xl mx-auto w-full flex-1 flex flex-col min-h-0">
-        <!-- Close Button -->
-        <button
-          class="fixed top-4 right-4 nav-arrow z-50"
-          aria-label="Close"
-          @click="handleClose"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-
-        <!-- Navigation -->
-        <div class="flex justify-between items-center mb-4 flex-shrink-0">
+    <div class="min-h-full flex flex-col items-center justify-center p-4 md:p-6 lg:h-full">
+      <div class="max-w-6xl mx-auto w-full flex-1 flex flex-col min-h-0 lg:h-full">
+        <!-- Header with navigation and close button - sticky on mobile -->
+        <div class="flex justify-between items-center mb-4 flex-shrink-0 sticky top-0 z-20 bg-wc-ucl-dark/95 backdrop-blur-sm py-2 -mx-2 px-2 rounded">
           <button
             :disabled="!hasPrev"
             class="nav-arrow"
             aria-label="Previous World Cup"
-            @click="prev"
+            @click="handlePrev"
           >
             <svg
               class="w-5 h-5"
@@ -88,32 +83,55 @@ const mapCities = computed(() => {
             {{ currentWorldCup?.year }}
           </div>
 
-          <button
-            :disabled="!hasNext"
-            class="nav-arrow"
-            aria-label="Next World Cup"
-            @click="next"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div class="flex items-center gap-2">
+            <button
+              :disabled="!hasNext"
+              class="nav-arrow"
+              aria-label="Next World Cup"
+              @click="handleNext"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            <!-- Close Button - Part of navigation for consistency -->
+            <button
+              class="nav-arrow ml-2"
+              aria-label="Close"
+              @click="handleClose"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Main Content -->
         <div
           v-if="currentWorldCup"
-          class="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0 overflow-hidden"
+          class="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0 overflow-y-auto lg:overflow-hidden"
         >
           <!-- Left Column - Year & Winner -->
           <div class="flex flex-col gap-4 min-h-0">
@@ -179,10 +197,10 @@ const mapCities = computed(() => {
               </div>
             </div>
 
-            <!-- Fun Facts -->
+            <!-- Fun Facts - max height on mobile with scroll -->
             <div
               v-if="currentWorldCup.funFacts?.length"
-              class="glass-card p-4 flex-1 flex flex-col min-h-0"
+              class="glass-card p-4 flex-1 flex flex-col min-h-0 max-h-64 lg:max-h-none"
             >
               <h3 class="text-wc-gold/60 text-xs uppercase tracking-wider mb-3 flex-shrink-0">
                 Fun Facts
@@ -202,15 +220,17 @@ const mapCities = computed(() => {
 
           <!-- Middle Column - Map & Venues -->
           <div class="flex flex-col gap-4 min-h-0">
-            <div class="glass-card p-3 flex-shrink-0">
-              <h3 class="text-wc-gold/60 text-xs uppercase tracking-wider mb-2 px-1">
+            <div class="glass-card p-3 flex flex-col flex-shrink-0">
+              <h3 class="text-wc-gold/60 text-xs uppercase tracking-wider mb-2 px-1 flex-shrink-0">
                 Host Cities
               </h3>
-              <MapView :cities="mapCities" />
+              <div class="h-48 lg:h-56 flex-shrink-0">
+                <MapView :cities="mapCities" />
+              </div>
             </div>
 
-            <!-- Venues List - Improved -->
-            <div class="glass-card p-4 flex-1 flex flex-col min-h-0">
+            <!-- Venues List - max height on mobile with scroll -->
+            <div class="glass-card p-4 flex-1 flex flex-col min-h-0 max-h-80 lg:max-h-none">
               <div class="flex items-center justify-between mb-3 flex-shrink-0">
                 <h3 class="text-wc-gold/60 text-xs uppercase tracking-wider">
                   Venues
@@ -295,7 +315,7 @@ const mapCities = computed(() => {
           </div>
 
           <!-- Right Column - Tournament -->
-          <div class="glass-card p-4 flex flex-col min-h-0">
+          <div class="glass-card p-4 flex flex-col min-h-0 mb-8 lg:mb-0">
             <h3 class="text-wc-gold/60 text-xs uppercase tracking-wider mb-3 flex-shrink-0">
               Tournament
             </h3>

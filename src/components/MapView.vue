@@ -32,6 +32,32 @@ const uclIcon = L.divIcon({
   popupAnchor: [0, -24],
 })
 
+// Crowded marker detection
+const CROWDED_THRESHOLD = 0.5 // degrees - if min distance between markers is below this, zoom in more
+const DEFAULT_MAX_ZOOM = 6
+const CROWDED_MAX_ZOOM = 14
+
+interface Coordinate {
+  lat: number
+  lng: number
+}
+
+function getMinMarkerDistance(coordinates: Coordinate[]): number {
+  if (coordinates.length < 2) return Infinity
+
+  let minDist = Infinity
+  for (let i = 0; i < coordinates.length; i++) {
+    for (let j = i + 1; j < coordinates.length; j++) {
+      const dist = Math.sqrt(
+        Math.pow(coordinates[i].lat - coordinates[j].lat, 2) +
+        Math.pow(coordinates[i].lng - coordinates[j].lng, 2)
+      )
+      minDist = Math.min(minDist, dist)
+    }
+  }
+  return minDist
+}
+
 // Primary and fallback tile providers
 const tileProviders = [
   {
@@ -116,6 +142,7 @@ function updateMarkers() {
 
   // Add markers for each city with null checks
   const bounds: L.LatLngBoundsExpression = []
+  const coordinates: Coordinate[] = []
 
   props.cities.forEach(city => {
     if (!city.coordinates || city.coordinates.length < 2) return
@@ -131,12 +158,17 @@ function updateMarkers() {
       `)
 
     markers.push(marker)
+    coordinates.push({ lat, lng })
     bounds.push([lat, lng])
   })
 
+  // Determine maxZoom based on marker density
+  const minDistance = getMinMarkerDistance(coordinates)
+  const maxZoom = minDistance < CROWDED_THRESHOLD ? CROWDED_MAX_ZOOM : DEFAULT_MAX_ZOOM
+
   // Fit map to bounds
   if (bounds.length > 0) {
-    map.fitBounds(bounds, { padding: [30, 30], maxZoom: 6 })
+    map.fitBounds(bounds, { padding: [30, 30], maxZoom })
   }
 }
 
@@ -193,7 +225,7 @@ onUnmounted(() => {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #FF6B6B, #003399);
+  background: linear-gradient(135deg, #3B82F6, #003399);
   border: 2px solid white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   display: flex;
@@ -211,11 +243,11 @@ onUnmounted(() => {
 @keyframes markerPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 0 rgba(255, 107, 107, 0.4);
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0.4);
   }
   50% {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
   }
 }
 
@@ -240,7 +272,7 @@ onUnmounted(() => {
 
 .map-popup-title {
   font-weight: 600;
-  color: #FF8E8E;
+  color: #60A5FA;
   margin: 0;
 }
 
