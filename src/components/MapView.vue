@@ -3,11 +3,16 @@ import { ref, onMounted, watch, onUnmounted, nextTick } from 'vue'
 import L from 'leaflet'
 import type { HostCity } from '../types/world-cup'
 
+// Constants
+const MAP_INIT_DELAY_MS = 100 // Delay to ensure container is visible before initializing Leaflet
+const TILE_LOAD_TIMEOUT_MS = 10000 // Timeout for tile loading fallback
+
 const props = defineProps<{
   cities: HostCity[]
 }>()
 
 const mapContainer = ref<HTMLDivElement | null>(null)
+const mapError = ref(false)
 let map: L.Map | null = null
 let markers: L.Marker[] = []
 let isInitialized = false
@@ -16,8 +21,8 @@ let isInitialized = false
 const uclIcon = L.divIcon({
   className: 'custom-marker',
   html: `
-    <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#FF6B6B,#003399);border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;">
-      <svg style="width:12px;height:12px;color:white;" fill="currentColor" viewBox="0 0 24 24">
+    <div class="marker-inner">
+      <svg class="marker-svg" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
       </svg>
     </div>
@@ -27,31 +32,77 @@ const uclIcon = L.divIcon({
   popupAnchor: [0, -24],
 })
 
+// Primary and fallback tile providers
+const tileProviders = [
+  {
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    options: { maxZoom: 19 }
+  },
+  {
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    options: { maxZoom: 18 }
+  }
+]
+
 function initMap() {
   if (!mapContainer.value || isInitialized) return
 
-  // Initialize map
-  map = L.map(mapContainer.value, {
-    center: [20, 0],
-    zoom: 2,
-    zoomControl: true,
-    attributionControl: false,
-  })
+  try {
+    // Initialize map
+    map = L.map(mapContainer.value, {
+      center: [20, 0],
+      zoom: 2,
+      zoomControl: true,
+      attributionControl: false,
+    })
 
-  // Add dark tile layer
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-  }).addTo(map)
+    // Add tile layer with error handling
+    addTileLayerWithFallback()
 
-  isInitialized = true
+    isInitialized = true
+    mapError.value = false
 
-  // Fix map rendering after it's visible
-  nextTick(() => {
-    if (map) {
-      map.invalidateSize()
-      updateMarkers()
+    // Fix map rendering after it's visible
+    nextTick(() => {
+      if (map) {
+        map.invalidateSize()
+        updateMarkers()
+      }
+    })
+  } catch {
+    mapError.value = true
+    console.error('Failed to initialize map')
+  }
+}
+
+function addTileLayerWithFallback(providerIndex = 0) {
+  if (!map || providerIndex >= tileProviders.length) {
+    mapError.value = true
+    return
+  }
+
+  const provider = tileProviders[providerIndex]
+  const tileLayer = L.tileLayer(provider.url, provider.options)
+
+  // Set up error handling for tile loading
+  const timeoutId = setTimeout(() => {
+    if (!isInitialized) {
+      tileLayer.remove()
+      addTileLayerWithFallback(providerIndex + 1)
     }
+  }, TILE_LOAD_TIMEOUT_MS)
+
+  tileLayer.on('load', () => {
+    clearTimeout(timeoutId)
   })
+
+  tileLayer.on('tileerror', () => {
+    clearTimeout(timeoutId)
+    tileLayer.remove()
+    addTileLayerWithFallback(providerIndex + 1)
+  })
+
+  tileLayer.addTo(map)
 }
 
 function updateMarkers() {
@@ -63,17 +114,19 @@ function updateMarkers() {
 
   if (props.cities.length === 0) return
 
-  // Add markers for each city
+  // Add markers for each city with null checks
   const bounds: L.LatLngBoundsExpression = []
 
   props.cities.forEach(city => {
+    if (!city.coordinates || city.coordinates.length < 2) return
+
     const [lat, lng] = city.coordinates
     const marker = L.marker([lat, lng], { icon: uclIcon })
       .addTo(map!)
       .bindPopup(`
-        <div style="padding:8px;">
-          <p style="font-weight:600;color:#FF8E8E;">${city.name}</p>
-          ${city.stadium ? `<p style="font-size:12px;color:rgba(247,243,233,0.7);margin-top:4px;">${city.stadium}</p>` : ''}
+        <div class="map-popup">
+          <p class="map-popup-title">${city.name}</p>
+          ${city.stadium ? `<p class="map-popup-stadium">${city.stadium}</p>` : ''}
         </div>
       `)
 
@@ -98,10 +151,9 @@ watch(() => props.cities, () => {
 }, { deep: true })
 
 onMounted(() => {
-  // Small delay to ensure container is visible
   setTimeout(() => {
     initMap()
-  }, 100)
+  }, MAP_INIT_DELAY_MS)
 })
 
 onUnmounted(() => {
@@ -116,6 +168,15 @@ onUnmounted(() => {
 <template>
   <div class="map-container">
     <div
+      v-if="mapError"
+      class="w-full h-48 md:h-56 rounded-lg flex items-center justify-center bg-wc-ucl-dark/50"
+    >
+      <p class="text-wc-cream/50 text-sm">
+        Map unavailable
+      </p>
+    </div>
+    <div
+      v-else
       ref="mapContainer"
       class="w-full h-48 md:h-56 rounded-lg"
     />
@@ -128,8 +189,23 @@ onUnmounted(() => {
   border: none;
 }
 
-.custom-marker > div {
+.custom-marker .marker-inner {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF6B6B, #003399);
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: markerPulse 2s ease-in-out infinite;
+}
+
+.custom-marker .marker-svg {
+  width: 12px;
+  height: 12px;
+  color: white;
 }
 
 @keyframes markerPulse {
@@ -156,5 +232,21 @@ onUnmounted(() => {
 
 .leaflet-popup-tip {
   background: rgba(15, 20, 25, 0.95) !important;
+}
+
+.map-popup {
+  padding: 8px;
+}
+
+.map-popup-title {
+  font-weight: 600;
+  color: #FF8E8E;
+  margin: 0;
+}
+
+.map-popup-stadium {
+  font-size: 12px;
+  color: rgba(247, 243, 233, 0.7);
+  margin-top: 4px;
 }
 </style>

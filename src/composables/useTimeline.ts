@@ -1,6 +1,12 @@
 import { ref, computed } from 'vue'
 import type { WorldCup } from '../types/world-cup'
 
+/**
+ * Module-level state for the timeline.
+ * This creates a singleton pattern where all components share the same state.
+ * This is intentional for this application to maintain consistent state across views.
+ * For testing, call setWorldCups() to reset state between tests.
+ */
 const currentIndex = ref(0)
 const hoveredIndex = ref<number | null>(null)
 const viewMode = ref<'timeline' | 'fullscreen'>('timeline')

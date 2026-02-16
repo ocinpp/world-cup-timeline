@@ -231,9 +231,7 @@ onMounted(() => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-</style>
 
-<style scoped>
 .fade-enter-active {
   transition: opacity 0.3s ease;
 }

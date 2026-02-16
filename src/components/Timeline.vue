@@ -7,6 +7,9 @@ const { worldCups, currentIndex, hoveredIndex, setHoveredIndex, selectIndex, ope
 const timelineRef = ref<HTMLElement | null>(null)
 const itemRefs = ref<Map<number, HTMLElement>>(new Map())
 
+// Constants
+const SCROLL_DELAY_MS = 100 // Delay for smooth scroll after initial mount
+
 function scrollToItem(index: number) {
   const item = itemRefs.value.get(index)
   if (item && timelineRef.value) {
@@ -39,7 +42,7 @@ watch(currentIndex, (newIndex) => {
 
 onMounted(() => {
   if (worldCups.value.length > 0) {
-    setTimeout(() => scrollToItem(currentIndex.value), 100)
+    setTimeout(() => scrollToItem(currentIndex.value), SCROLL_DELAY_MS)
   }
 })
 </script>

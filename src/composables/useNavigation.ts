@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import { useTimeline } from './useTimeline'
 
 export function useNavigation() {
@@ -51,13 +51,25 @@ export function useNavigation() {
     }
   }
 
-  onMounted(() => {
+  function start() {
     window.addEventListener('keydown', handleKeydown)
-  })
+  }
 
-  onUnmounted(() => {
+  function stop() {
     window.removeEventListener('keydown', handleKeydown)
-  })
+  }
+
+  // Only use lifecycle hooks if inside a component context
+  const instance = getCurrentInstance()
+  if (instance) {
+    onMounted(() => {
+      start()
+    })
+
+    onUnmounted(() => {
+      stop()
+    })
+  }
 
   return {
     next,
@@ -67,5 +79,8 @@ export function useNavigation() {
     openFullscreen,
     closeFullscreen,
     toggleFullscreen,
+    // Expose start/stop for testing or manual control
+    start,
+    stop,
   }
 }

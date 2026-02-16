@@ -67,47 +67,6 @@
 }
 
 @layer components {
-  .timeline-item {
-    @apply relative flex flex-col items-center cursor-pointer transition-all duration-500 ease-out;
-    transform-origin: center bottom;
-  }
-
-  .timeline-item:hover {
-    transform: translateY(-8px) scale(1.02);
-  }
-
-  .timeline-item.selected {
-    transform: translateY(-12px) scale(1.05);
-  }
-
-  .timeline-thumbnail {
-    @apply w-14 h-14 md:w-16 md:h-16 rounded-full border-2 flex items-center justify-center overflow-hidden transition-all duration-300 ease-out;
-    background: linear-gradient(
-      145deg,
-      rgba(0, 51, 153, 0.6) 0%,
-      rgba(10, 22, 40, 0.9) 100%
-    );
-    border-color: rgba(245, 166, 35, 0.25);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .timeline-thumbnail:hover {
-    border-color: var(--color-coral);
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
-  }
-
-  .timeline-thumbnail.active {
-    border-color: var(--color-coral);
-    transform: scale(1.15);
-    box-shadow: 0 0 25px rgba(255, 107, 107, 0.4);
-    background: linear-gradient(
-      145deg,
-      rgba(255, 107, 107, 0.2) 0%,
-      rgba(10, 22, 40, 0.9) 100%
-    );
-  }
-
   .detail-overlay {
     @apply fixed inset-0 z-50 overflow-hidden;
     background:
