@@ -48,12 +48,14 @@ export function useTimeline() {
   function next() {
     if (hasNext.value) {
       currentIndex.value++
+      hoveredIndex.value = null
     }
   }
 
   function prev() {
     if (hasPrev.value) {
       currentIndex.value--
+      hoveredIndex.value = null
     }
   }
 

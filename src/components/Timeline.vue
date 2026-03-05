@@ -22,7 +22,7 @@ function handleMouseEnter(index: number) {
 }
 
 function handleMouseLeave() {
-  // Do nothing - keep showing the hovered tournament
+  setHoveredIndex(null)
 }
 
 function handleClick(index: number) {
