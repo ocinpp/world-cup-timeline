@@ -32,7 +32,7 @@ onMounted(() => {
       <div class="flex items-center gap-3">
         <div class="trophy-glow">
           <img
-            src="/images/FIFA_World_Cup_Icon_(Campionato_mondiale_di_calcio).svg"
+            src="/images/world-cup-trophy.svg"
             alt="World Cup Trophy"
             class="h-8 w-auto object-contain"
           >

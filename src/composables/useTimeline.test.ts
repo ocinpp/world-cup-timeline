@@ -113,6 +113,19 @@ describe('useTimeline', () => {
       timeline.goToLast()
       expect(timeline.currentIndex.value).toBe(2)
     })
+
+    it('should clear hovered index when navigating next', () => {
+      timeline.setHoveredIndex(2)
+      timeline.next()
+      expect(timeline.hoveredIndex.value).toBeNull()
+    })
+
+    it('should clear hovered index when navigating prev', () => {
+      timeline.selectIndex(2)
+      timeline.setHoveredIndex(0)
+      timeline.prev()
+      expect(timeline.hoveredIndex.value).toBeNull()
+    })
   })
 
   describe('selectByYear', () => {

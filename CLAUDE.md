@@ -49,7 +49,7 @@ const displayWorldCup = computed(() => {
 })
 ```
 
-Mouse leave does NOT reset to current selection - it keeps showing the last hovered item.
+Mouse leave resets the hovered state to null, ensuring the featured card shows the currently selected tournament. Similarly, navigation via `next()` and `prev()` also clears the hovered state.
 
 ### Map Initialization
 
