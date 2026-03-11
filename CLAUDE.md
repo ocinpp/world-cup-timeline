@@ -53,12 +53,61 @@ Mouse leave resets the hovered state to null, ensuring the featured card shows t
 
 ### Map Initialization
 
-Map requires a delay before initialization to render properly in overlays:
+Map requires a delay before initialization to render properly in overlays. All timeouts and watchers must be cleaned up on unmount:
 
 ```typescript
-const MAP_INIT_DELAY_MS = 100 // Delay to ensure container is visible
+// Timeout tracking for cleanup
+let mapInitTimeoutId: number | null = null
+const tileLoadTimeoutIds: number[] = []
+
 onMounted(() => {
-  setTimeout(() => initMap(), MAP_INIT_DELAY_MS)
+  mapInitTimeoutId = window.setTimeout(() => {
+    initMap()
+  }, MAP_INIT_DELAY_MS)
+})
+
+onUnmounted(() => {
+  // Clear all tile load timeouts
+  tileLoadTimeoutIds.forEach(id => clearTimeout(id))
+  tileLoadTimeoutIds.length = 0
+
+  // Clear map init timeout
+  if (mapInitTimeoutId) {
+    clearTimeout(mapInitTimeoutId)
+  }
+
+  // Stop watchers
+  stopWatchCities()
+
+  if (map) {
+    map.remove()
+    map = null
+  }
+})
+```
+
+### Resource Cleanup
+
+Components using timeouts, watchers, or external resources must clean up in `onUnmounted`:
+
+```typescript
+// Track timeouts for cleanup
+let scrollTimeoutId: ReturnType<typeof setTimeout> | null = null
+
+// Store watcher stop functions
+const stopWatch = watch(() => props.value, callback)
+
+onUnmounted(() => {
+  // Clear timeouts
+  if (scrollTimeoutId) {
+    clearTimeout(scrollTimeoutId)
+  }
+
+  // Stop watchers
+  stopWatch()
+
+  // Clear refs
+  itemRefs.value.clear()
 })
 ```
 
