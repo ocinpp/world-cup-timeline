@@ -7,6 +7,10 @@ import type { HostCity } from '../types/world-cup'
 const MAP_INIT_DELAY_MS = 100 // Delay to ensure container is visible before initializing Leaflet
 const TILE_LOAD_TIMEOUT_MS = 10000 // Timeout for tile loading fallback
 
+// Timeout tracking for cleanup
+let mapInitTimeoutId: number | null = null
+const tileLoadTimeoutIds: number[] = []
+
 const props = defineProps<{
   cities: HostCity[]
 }>()
@@ -111,19 +115,30 @@ function addTileLayerWithFallback(providerIndex = 0) {
   const tileLayer = L.tileLayer(provider.url, provider.options)
 
   // Set up error handling for tile loading
-  const timeoutId = setTimeout(() => {
+  const timeoutId = window.setTimeout(() => {
     if (!isInitialized) {
       tileLayer.remove()
       addTileLayerWithFallback(providerIndex + 1)
     }
   }, TILE_LOAD_TIMEOUT_MS)
+  tileLoadTimeoutIds.push(timeoutId)
 
   tileLayer.on('load', () => {
     clearTimeout(timeoutId)
+    // Remove from tracking array
+    const idx = tileLoadTimeoutIds.indexOf(timeoutId)
+    if (idx > -1) {
+      tileLoadTimeoutIds.splice(idx, 1)
+    }
   })
 
   tileLayer.on('tileerror', () => {
     clearTimeout(timeoutId)
+    // Remove from tracking array
+    const idx = tileLoadTimeoutIds.indexOf(timeoutId)
+    if (idx > -1) {
+      tileLoadTimeoutIds.splice(idx, 1)
+    }
     tileLayer.remove()
     addTileLayerWithFallback(providerIndex + 1)
   })
@@ -173,7 +188,7 @@ function updateMarkers() {
 }
 
 // Watch for city changes
-watch(() => props.cities, () => {
+const stopWatchCities = watch(() => props.cities, () => {
   nextTick(() => {
     if (map) {
       map.invalidateSize()
@@ -182,13 +197,29 @@ watch(() => props.cities, () => {
   })
 }, { deep: true })
 
+onUnmounted(() => {
+  stopWatchCities()
+})
+
 onMounted(() => {
-  setTimeout(() => {
+  mapInitTimeoutId = window.setTimeout(() => {
     initMap()
   }, MAP_INIT_DELAY_MS)
 })
 
 onUnmounted(() => {
+  // Clear all tile load timeouts
+  tileLoadTimeoutIds.forEach(id => clearTimeout(id))
+  tileLoadTimeoutIds.length = 0
+
+  // Clear map init timeout
+  if (mapInitTimeoutId) {
+    clearTimeout(mapInitTimeoutId)
+  }
+
+  // Stop the cities watcher
+  stopWatchCities()
+
   if (map) {
     map.remove()
     map = null

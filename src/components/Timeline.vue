@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useTimeline } from '../composables/useTimeline'
 
 const { worldCups, currentIndex, hoveredIndex, setHoveredIndex, selectIndex, openFullscreen } = useTimeline()
@@ -9,6 +9,7 @@ const itemRefs = ref<Map<number, HTMLElement>>(new Map())
 
 // Constants
 const SCROLL_DELAY_MS = 100 // Delay for smooth scroll after initial mount
+let scrollTimeoutId: ReturnType<typeof setTimeout> | null = null
 
 function scrollToItem(index: number) {
   const item = itemRefs.value.get(index)
@@ -36,13 +37,23 @@ function setItemRef(el: HTMLElement | null, index: number) {
   }
 }
 
+onUnmounted(() => {
+  itemRefs.value.clear()
+})
+
 watch(currentIndex, (newIndex) => {
   scrollToItem(newIndex)
 })
 
 onMounted(() => {
   if (worldCups.value.length > 0) {
-    setTimeout(() => scrollToItem(currentIndex.value), SCROLL_DELAY_MS)
+    scrollTimeoutId = setTimeout(() => scrollToItem(currentIndex.value), SCROLL_DELAY_MS)
+  }
+})
+
+onUnmounted(() => {
+  if (scrollTimeoutId) {
+    clearTimeout(scrollTimeoutId)
   }
 })
 </script>
