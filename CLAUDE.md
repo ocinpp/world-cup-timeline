@@ -126,6 +126,28 @@ For scrollable content with fixed headers, use this pattern:
 
 Parent must have `min-h-0` for flex shrinking to work.
 
+### Detail View Transitions
+
+The detail view uses Vue's `<Transition>` component with CSS animations for smooth enter/leave effects:
+
+```html
+<Transition name="detail">
+  <DetailView v-if="viewMode === 'fullscreen'" />
+</Transition>
+```
+
+```css
+.detail-enter-active {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.detail-leave-active {
+  animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+```
+
+Both enter and leave animations use the same duration (0.4s) for consistency. The animations are defined in App.vue's scoped styles, not in global CSS.
+
 ### Mobile Layout Patterns
 
 For responsive layouts that differ between mobile and desktop:

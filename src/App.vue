@@ -186,7 +186,7 @@ onMounted(() => {
     </main>
 
     <!-- Detail View Overlay -->
-    <Transition name="fade">
+    <Transition name="detail">
       <DetailView
         v-if="viewMode === 'fullscreen'"
         @close="closeFullscreen"
@@ -230,15 +230,34 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.fade-enter-active {
-  transition: opacity 0.3s ease;
-}
-.fade-leave-active {
-  transition: opacity 0.15s ease;
+/* Detail view transition animations */
+.detail-enter-active {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+.detail-leave-active {
+  animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }
 </style>

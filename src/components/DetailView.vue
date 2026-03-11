@@ -48,7 +48,7 @@ const mapCities = computed(() => {
 <template>
   <div
     ref="overlayRef"
-    class="detail-overlay detail-enter"
+    class="detail-overlay"
     role="dialog"
     aria-modal="true"
     @click="handleBackdropClick"
